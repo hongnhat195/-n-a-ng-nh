@@ -1,0 +1,62 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=fallback");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "styles/flatpickr.css";
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+@import "~antd/dist/antd.css";
+
+:root {
+  --yellow: linear-gradient(to right, #f3723b, #e54750);
+}
+
+* {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  outline: none;
+}
+a,
+a:hover {
+  text-decoration: none;
+}
+
+h1,
+h3 {
+  font-family: "Oswald", sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+  /* height:200rem; */
+}
+
+html::-webkit-scrollbar {
+  width: 14px;
+}
+
+html::-webkit-scrollbar-track {
+  background: #333;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: var(--yellow);
+}
+#toggle-switch::after {
+  content: "";
+  @apply h-9 w-9 rounded-full bg-white absolute left-0  top-0 transform scale-110 transition duration-200;
+}
+#toggle::after {
+  content: "";
+  @apply h-9 w-9 rounded-full bg-white absolute right-0  top-0 transform scale-110 transition duration-200;
+}
+#toggle:checked::after {
+  @apply transform scale-110 -translate-x-10;
+}
+
+#toggle-switch:checked::after {
+  @apply transform scale-110 translate-x-10;
+}
