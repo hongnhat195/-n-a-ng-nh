@@ -1,16 +1,13 @@
 const mongoose = require('mongoose');
-const config = require('config');
-const db = config.get('mongoURI');
+const config = require("./default.json");
+const db = config.mongoURI;
 
 var DbConnection = () => {
   var database = null;
 
   var DbConnect = async () => {
     try {
-      var connect = await mongoose.connect(db, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
+      var connect = await mongoose.connect(db);
         
       console.log('MongoDB Connected...🎄');
       return connect;

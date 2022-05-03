@@ -64,7 +64,7 @@ function Home(props) {
         { headers: { "Content-Type": "application/json" } }
       )
       .then((res) => {
-        // console.log(res.data)
+        console.log(res.data)
         set_Soil(res.data[1]);
         set_Temp(res.data[0]);
         set_Sound(res.data[2]);
@@ -240,13 +240,13 @@ function Home(props) {
           </button>
         )}
       </div>
-      <h1
+      {/* <h1
         className="font-bold text-xl text-violet-600 my-8"
         style={{ marginBottom: "0px", color: "#875AB2" }}
       >
         Các thiết bị
-      </h1>
-      <div class="flex flex-col">
+      </h1> */}
+      {/* <div class="flex flex-col">
         <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
             <div class="overflow-hidden">
@@ -379,7 +379,7 @@ function Home(props) {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
