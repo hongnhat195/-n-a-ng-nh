@@ -5,7 +5,7 @@ import RealtimeChart from "../charts/realtimeChart";
 // Import utilities
 import { tailwindConfig, hexToRGB } from "../../utils/Utils";
 
-export default function Enviroment({dataReal, unit }) {
+export default function Enviroment({ dataReal, unit }) {
   const [counter, setCounter] = useState(0);
   const [increment, setIncrement] = useState(0);
   const [range, setRange] = useState(60);
@@ -20,9 +20,7 @@ export default function Enviroment({dataReal, unit }) {
     59.09, 59.36, 58.71, 59.42, 55.93, 57.71, 50.62, 56.28, 57.37, 53.08, 55.94,
     55.82, 53.94, 52.65, 50.25,
   ];
-  // let data = dataReal;
-  // if (dataReal == [] || dataReal != null) {
-  //   data = dataReal;
+
   // }
   const [slicedData, setSlicedData] = useState(data.slice(0, range));
   // Generate fake dates from now to back in time
@@ -63,7 +61,7 @@ export default function Enviroment({dataReal, unit }) {
     return () => setIncrement(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [counter]);
-  console.log(slicedLabels)
+  // console.log(slicedLabels);
   const chartData = {
     labels: slicedLabels,
     datasets: [
@@ -96,8 +94,7 @@ export default function Enviroment({dataReal, unit }) {
               className="underline"
               href="https://www.chartjs.org/"
               target="_blank"
-              rel="noreferrer"
-            >
+              rel="noreferrer">
               Chart.js
             </a>
           </div>

@@ -1,39 +1,41 @@
-const Data = require("../models/Data");
+//const Data = require("../models/Data");
+
+const axios = require("axios");
 
 const getDataByDevice = (() => {
   const getdata = async (req, res) => {
+    console.log(req.body);
     try {
-      console.log("body: ", req.body);
-      const datadb = await Data.find({ name: req.body.name });
-      if (!datadb) throw { message: "Lost database connection!" };
-      var data = [];
-      var start = new Date(req.body.start);
-      var end = new Date(req.body.end);
-      var min = 1024,
+      const response = await axios.get(
+        `https://io.adafruit.com/api/v2/binhbuibksg0123/feeds/ourfarm-${req.body.name}/data?X-AIO-Key=aio_DgNW0356m0ckC6aE0oYNCAzqh6iF`
+      );
+      const datadb = response.data;
+      // console.log(datadb);
+      let data = [];
+      let start = new Date(req.body.start);
+      let end = new Date(req.body.end);
+      console.log(start.getTime(), end.getTime());
+      let min = 1024,
         max = -1,
         avg = 0,
         n = 0;
-      if (
-        start.toString() === "Invalid Date" ||
-        end.toString() === "Invalid Date"
-      )
-        throw { message: "Invalid Date" };
       datadb.forEach((res) => {
         if (
-          res.time.getTime() >= start.getTime() &&
-          res.time.getTime() <= end.getTime()
+          new Date(res.created_at).getTime() >= start.getTime() &&
+          new Date(res.created_at).getTime() <= end.getTime()
         ) {
           n++;
-          data.push({ val: res.value, time: res.time });
+          data.push({ val: Number(res.value), time: res.created_at });
           if (Number(res.value) < min) min = Number(res.value);
           if (Number(res.value) > max) max = Number(res.value);
           avg += Number(res.value);
         }
       });
-      res.status(200).send({ min: min, max: max, avg: avg / n, data: data });
+      obj = Object.assign({ min, max, avg: avg / n, data });
+      console.log(obj);
+      return res.json(obj);
     } catch (err) {
-      if (err.message === "Invalid Date") res.status(400).send(err);
-      else res.status(404).send(err);
+      res.status(404).send(err);
     }
   };
 

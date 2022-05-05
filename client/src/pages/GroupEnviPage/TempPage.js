@@ -2,10 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Footer, Header, Sidebar, Enviroment } from "../../components";
 import GaugeChart from "react-gauge-chart";
-import DateTimePicker from "@mui/lab/DateTimePicker";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import TextField from "@mui/material/TextField";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -22,12 +18,40 @@ function TempPage(props) {
   const [minValue, setminValue] = useState("");
   const [avgValue, setavgValue] = useState("");
   const [dataReal, setDataReal] = useState([]);
-  const [timeReal, setTimeReal] = useState([]);
   const [rows, setRows] = useState([
     { name: "Max value", value: 0 },
     { name: "Min value", value: 0 },
     { name: "Average value", value: 0 },
   ]);
+
+  const changeChart = async () => {
+    const res = await axios.post("http://localhost:5000/api/data", {
+      name: "temp",
+      start: valueStart,
+      end: valueEnd,
+    });
+
+    console.log(res);
+    const data = [];
+    res.data.data.map((item, index) => {
+      data.push(parseInt(item.val));
+    });
+    setDataReal(data);
+    setmaxValue(res.data.max);
+    setminValue(res.data.min);
+    setavgValue(res.data.avg);
+    setRows([
+      { name: "Max value", value: res.data.max },
+      { name: "Min value", value: res.data.min },
+      {
+        name: "Average value",
+        value: Math.round(res.data.avg * 100) / 100,
+      },
+    ]);
+  };
+  useEffect(() => {
+    changeChart();
+  }, []);
   return (
     <div className="flex h-screen overflow-hidden">
       {/* Sidebar */}
@@ -58,95 +82,28 @@ function TempPage(props) {
                   Thời gian bật tắt dữ liệu
                 </p>
                 <div style={{ marginBottom: "15px" }}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DateTimePicker
-                      renderInput={(props) => <TextField {...props} />}
-                      label="DateTime_Start"
-                      value={valueStart}
-                      onChange={(newValue) => {
-                        setValueStart(newValue);
-                        axios
-                          .post(
-                            "http://127.0.0.1:5000/api/data",
-                            {
-                              name: "temp_sensor",
-                              start: valueStart,
-                              end: valueEnd,
-                            },
-                            { headers: { "Content-Type": "application/json" } }
-                          )
-                          .then((res) => {
-                            console.log(res)
-                            const data = [];
-                            const time = [];
-                            res.data.data.map((item, index) => {
-                              data.push(parseInt(item.val));
-                              // time.push(item.time);
-                            });
-                            setDataReal(data);
-                            console.log(dataReal);
-                            // setTimeReal(time);
-                            // console.log(timeReal);
-                            setmaxValue(res.data.max);
-                            setminValue(res.data.min);
-                            setavgValue(res.data.avg);
-                            setRows([
-                              { name: "Max value", value: res.data.max },
-                              { name: "Min value", value: res.data.min },
-                              { name: "Average value", value: Math.round(res.data.avg * 100) / 100 },
-                            ]);
-                          })
-                          .catch((err) => {
-                            alert(err);
-                          });
-                      }}
-                    />
-                  </LocalizationProvider>
-                </div>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DateTimePicker
-                    renderInput={(props) => <TextField {...props} />}
-                    label="DateTime_End"
-                    value={valueEnd}
-                    onChange={(newValue) => {
-                      setValueEnd(newValue);
-                      axios
-                        .post(
-                          "http://127.0.0.1:5000/api/data",
-                          {
-                            name: "temp_sensor",
-                            start: valueStart,
-                            end: valueEnd,
-                          },
-                          { headers: { "Content-Type": "application/json" } }
-                        )
-                        .then((res) => {
-                          console.log(res)
-                            const data = [];
-                            const time = [];
-                            res.data.data.map((item, index) => {
-                              data.push(parseInt(item.val));
-                              // time.push(item.time);
-                            });
-                            setDataReal(data);
-                            console.log(dataReal);
-                            // setTimeReal(time);
-                            // console.log(timeReal);
-                          setmaxValue(res.data.max);
-                          setminValue(res.data.min);
-                          setavgValue(res.data.avg);
-                          setRows([
-                            { name: "Max value", value: res.data.max },
-                            { name: "Min value", value: res.data.min },
-                            { name: "Average value", value: Math.round(res.data.avg * 100) / 100  },
-                          ]);
-                        })
-                        .catch((err) => {
-                          alert(err);
-                        });
+                  <input
+                    type="datetime-local"
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                      setValueStart(e.target.value);
                     }}
                   />
-                </LocalizationProvider>
+                </div>
+                <div style={{ marginBottom: "15px" }}>
+                  <input
+                    type="datetime-local"
+                    onChange={(e) => {
+                      console.log(e.target.value);
+                      setValueEnd(e.target.value);
+                    }}
+                  />
+                </div>
+                <button
+                  onClick={() => changeChart()}
+                  className="btn btn-primary">
+                  Submit
+                </button>
               </div>
               <div>
                 <TableContainer component={Paper}>
@@ -161,8 +118,7 @@ function TempPage(props) {
                         </TableCell>
                         <TableCell
                           style={{ fontWeight: "bold" }}
-                          align="right"
-                        ></TableCell>
+                          align="right"></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -171,8 +127,7 @@ function TempPage(props) {
                           key={row.name}
                           sx={{
                             "&:last-child td, &:last-child th": { border: 0 },
-                          }}
-                        >
+                          }}>
                           <TableCell component="th" scope="row">
                             {row.name}
                           </TableCell>

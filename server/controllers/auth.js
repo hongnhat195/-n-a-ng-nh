@@ -1,94 +1,108 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("../config/default.json");
+const { validationResult } = require("express-validator");
+const User = require("../models/User");
 
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const { validationResult } = require('express-validator');
-const User = require('../models/User');
-
-const Auth = (()=>{
+const Auth = (() => {
   const getAuthUser = async (req, res) => {
     try {
-      const user = await User.findById(req.user.id).select('-password');
+      const user = await User.findById(req.user.id).select("-password");
       res.json(user);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
   };
-  const checkLogin = async (req,res) =>{
+  const checkLogin = async (req, res) => {
     const { username, password } = req.body;
-    try{
-     
+    try {
       //check exist
       let user = await User.findOne({ username });
       if (!user) {
-        return res.json({ userError: 'User do not exist! Please try again.', passError:'' });
+        return res.json({
+          userError: "User do not exist! Please try again.",
+          passError: "",
+        });
       }
       //check right pwd
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.json({ userError:'',passError: 'Not correct password! Please try again' });
+        return res.json({
+          userError: "",
+          passError: "Not correct password! Please try again",
+        });
       }
       //return no fault
-       return res.json({userError:'',passError: ''});
-    }
-    catch{
+      return res.json({ userError: "", passError: "" });
+    } catch {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
-  }
+  };
   const loginUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
     const { username, password } = req.body;
-  
+
     try {
       let user = await User.findOne({ username });
-  
+
       if (!user) {
         // return res.status(400).send({ errors: [{ msg: 'Invalid Credentials' }] });
-        return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
-  
+
       const isMatch = await bcrypt.compare(password, user.password);
-  
+
       if (!isMatch) {
-        return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
-  
+
       const payload = {
         user: {
           id: user.id,
         },
       };
-  
-      jwt.sign(payload, config.get('jwtSecret'), { expiresIn: 36000 }, (err, token) => {
-        if (err) throw err;
-        res.json({ token });
-      });
+
+      jwt.sign(
+        payload,
+        config.jwtSecret,
+        { expiresIn: 36000 },
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send("Server error");
     }
   };
   const uploadAvatar = async (req, res) => {
-    const { username,imageUrl} = req.body;
+    const { username, imageUrl } = req.body;
     try {
       let user = await User.findOne({ username });
-  
+
       if (!user) {
-        return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
-      const update={
-        $set:{"avatar_img":imageUrl}
-      }
-      const result=await User.updateOne({username:username},update);
+      const update = {
+        $set: { avatar_img: imageUrl },
+      };
+      const result = await User.updateOne({ username: username }, update);
       res.json({ imageUrl });
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).send("Server error");
     }
   };
 
@@ -96,8 +110,8 @@ const Auth = (()=>{
     Get: getAuthUser,
     Check: checkLogin,
     Login: loginUser,
-    Upload: uploadAvatar
-  }
+    Upload: uploadAvatar,
+  };
 })();
 
 module.exports = Auth;

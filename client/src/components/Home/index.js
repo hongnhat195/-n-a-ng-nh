@@ -3,7 +3,7 @@ import "../../styles/Home.css";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
-import {changeValue} from './../../redux/actions/controlDevice'
+import { changeValue } from "./../../redux/actions/controlDevice";
 function changeLevel(name, level) {
   setTimeout(() => {
     axios
@@ -47,7 +47,7 @@ function Home(props) {
         { headers: { "Content-Type": "application/json" } }
       )
       .then((res) => {
-        console.log(res.data)
+        console.log(res.data);
         if (res.data == 1 || res.data == 0) setAuto(!auto);
       })
       .catch((err) => {
@@ -56,21 +56,17 @@ function Home(props) {
   };
 
   useEffect(() => {
-    console.log("useffect")
     axios
-      .post(
-        "http://127.0.0.1:5000/api/device",
-        { name: "soil_sensor" },
-        { headers: { "Content-Type": "application/json" } }
-      )
+      .get("http://localhost:5000/api/device")
       .then((res) => {
-        // console.log(res.data)
-        set_Soil(res.data[1]);
-        set_Temp(res.data[0]);
+        console.log(res.data);
+        set_Soil(res.data[0]);
+        set_Temp(res.data[1]);
+
         set_Sound(res.data[2]);
         set_Light(res.data[3]);
-        setSoilStatus(res.data[1].status);
-        setTempStatus(res.data[0].status);
+        setTempStatus(res.data[1].status);
+        setSoilStatus(res.data[0].status);
         setSoundStatus(res.data[2].status);
         setLightStatus(res.data[3].status);
       })
@@ -90,26 +86,24 @@ function Home(props) {
       .catch((err) => {
         alert(err);
       });
-  }, [dispatch,userInfo]);
+  }, [dispatch, userInfo]);
   const devices = [
-    { id: 1, name: "Máy bơm",state:data_soil.status},
-    { id: 2, name: "Máy phun sương",state:data_temp.status},
-    { id: 3, name: "Máy quạt ",state:data_sound.status},
-    { id: 4, name: "Bóng đèn",state:data_light.status},
+    { id: 1, name: "Máy bơm", state: data_soil.status },
+    { id: 2, name: "Máy phun sương", state: data_temp.status },
+    { id: 3, name: "Máy quạt ", state: data_sound.status },
+    { id: 4, name: "Bóng đèn", state: data_light.status },
   ];
 
   return (
     <div className="">
       <h1
         className="font-bold text-xl text-violet-600"
-        style={{ marginTop: "10px", color: "#875AB2" }}
-      >
+        style={{ marginTop: "10px", color: "#875AB2" }}>
         Mức cho phép
       </h1>
       <div
         className="grid grid-cols-4 gap-4 mt-6"
-        style={{ marginLeft: "50px" }}
-      >
+        style={{ marginLeft: "50px" }}>
         <div className="w-44 h-32 flex">
           <p className="h-32 flex-1" style={{ backgroundColor: "#5048E5" }}>
             <img
@@ -130,7 +124,7 @@ function Home(props) {
                 style={{ width: "18px" }}
                 onChange={() => {
                   changeLevel("soil_sensor", editSoil.current.value);
-                  set_Soil({...data_soil,"level":editSoil.current.value});
+                  set_Soil({ ...data_soil, level: editSoil.current.value });
                 }}
               />
               %
@@ -157,7 +151,7 @@ function Home(props) {
                 style={{ width: "25px" }}
                 onChange={() => {
                   changeLevel("temp_sensor", editTemp.current.value);
-                  set_Temp({...data_temp,"level":editTemp.current.value});
+                  set_Temp({ ...data_temp, level: editTemp.current.value });
                 }}
               />
               °C
@@ -184,7 +178,7 @@ function Home(props) {
                 style={{ width: "18px" }}
                 onChange={() => {
                   changeLevel("sound_sensor", editSound.current.value);
-                  set_Sound({...data_sound,"level":editSound.current.value});
+                  set_Sound({ ...data_sound, level: editSound.current.value });
                 }}
               />
               DBA
@@ -211,7 +205,7 @@ function Home(props) {
                 style={{ width: "25px" }}
                 onChange={() => {
                   changeLevel("light_sensor", editLight.current.value);
-                  set_Light({...data_light,"level":editLight.current.value});
+                  set_Light({ ...data_light, level: editLight.current.value });
                 }}
               />
               Lux
@@ -222,16 +216,14 @@ function Home(props) {
 
       <h1
         className="font-bold text-xl text-violet-600 mt-11 mb-7"
-        style={{ color: "#875AB2" }}
-      >
+        style={{ color: "#875AB2" }}>
         Chế độ
       </h1>
       <div onClick={controlhandle}>
         {auto === true ? (
           <button
             className="hover:bg-gray-100 text-white font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-            style={{ backgroundColor: "#5FD855" }}
-          >
+            style={{ backgroundColor: "#5FD855" }}>
             THỦ CÔNG
           </button>
         ) : (
@@ -242,8 +234,7 @@ function Home(props) {
       </div>
       <h1
         className="font-bold text-xl text-violet-600 my-8"
-        style={{ marginBottom: "0px", color: "#875AB2" }}
-      >
+        style={{ marginBottom: "0px", color: "#875AB2" }}>
         Các thiết bị
       </h1>
       <div class="flex flex-col">
@@ -255,26 +246,22 @@ function Home(props) {
                   <tr>
                     <th
                       scope="col"
-                      class="text-sm font-semibold text-gray-900 px-6 py-4 text-left"
-                    >
+                      class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
                       Số thứ tự
                     </th>
                     <th
                       scope="col"
-                      class="text-sm font-semibold text-gray-900 px-6 py-4 text-left"
-                    >
+                      class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
                       Tên thiết bị
                     </th>
                     <th
                       scope="col"
-                      class="text-sm font-semibold text-gray-900 px-6 py-4 text-left"
-                    >
+                      class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
                       Trạng thái
                     </th>
                     <th
                       scope="col"
-                      class="text-sm font-semibold text-gray-900 px-6 py-4 text-left"
-                    >
+                      class="text-sm font-semibold text-gray-900 px-6 py-4 text-left">
                       Bật/Tắt thiết bị
                     </th>
                   </tr>
@@ -289,9 +276,9 @@ function Home(props) {
                         {item.name}
                       </td>
                       <td class="text-sm text-green-500 font-light px-6 py-4 whitespace-nowrap">
-                        {auto==false?
-                        <p class="text-blue-500">Tự động</p>
-                        :(item.id == 1 ? (
+                        {auto == false ? (
+                          <p class="text-blue-500">Tự động</p>
+                        ) : item.id == 1 ? (
                           item.state === "on" ? (
                             "Đang bật"
                           ) : (
@@ -313,7 +300,7 @@ function Home(props) {
                           "Đang bật"
                         ) : (
                           <p class="text-red-500">Đang tắt</p>
-                        ))}
+                        )}
                       </td>
                       <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                         {auto === false ? (
@@ -336,34 +323,34 @@ function Home(props) {
                                   if (item.id == 1) {
                                     if (soilStatus == "on") {
                                       setSoilStatus("off");
-                                      dispatch(changeValue("soil-moisture-sensor.bbc-button","0"))
+                                      dispatch(changeValue("bbc-mb", "0"));
                                     } else {
                                       setSoilStatus("on");
-                                      dispatch(changeValue("soil-moisture-sensor.bbc-button","1"))
+                                      dispatch(changeValue("bbc-mb", "1"));
                                     }
                                   } else if (item.id == 2) {
                                     if (tempStatus == "on") {
                                       setTempStatus("off");
-                                      dispatch(changeValue("temp-sensor.bbc-button","2"))
+                                      dispatch(changeValue("bbc-ps", "0"));
                                     } else {
                                       setTempStatus("on");
-                                      dispatch(changeValue("temp-sensor.bbc-button","3"))
+                                      dispatch(changeValue("bbc-ps", "1"));
                                     }
                                   } else if (item.id == 3) {
                                     if (soundStatus == "on") {
                                       setSoundStatus("off");
-                                      dispatch(changeValue("sound-sensor.bbc-button","4"))
+                                      dispatch(changeValue("bbc-fan", "0"));
                                     } else {
                                       setSoundStatus("on");
-                                      dispatch(changeValue("sound-sensor.bbc-button","5"))
+                                      dispatch(changeValue("bbc-fan", "1"));
                                     }
                                   } else if (item.id == 4) {
                                     if (lightStatus == "on") {
                                       setLightStatus("off");
-                                      dispatch(changeValue("light-sensor.bbc-button","6"))
+                                      dispatch(changeValue("bbc-led", "0"));
                                     } else {
                                       setLightStatus("on");
-                                      dispatch(changeValue("light-sensor.bbc-button","7"))
+                                      dispatch(changeValue("bbc-led", "1"));
                                     }
                                   }
                                 }}
