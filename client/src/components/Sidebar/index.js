@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import ana_avatar from "../../assets/img/avatar_1.png"
 import logo from "../../assets/img/logo.png"
+import logo2 from "../../assets/img/logo3.png"
 import {render} from 'react-dom';
 import AvatarUploader from './supAvatar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,20 +14,21 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   useEffect(() => store.dispatch(loadUser()), []);
   const { user,isAuthenticated } = useSelector((state) => state.auth);
   return (
-    <aside class="w-64 border-r-2	" aria-label="Sidebar" style={{backgroundColor:"#B6D7A8"}}>
+    // <aside class="w-64 border-r-2	" aria-label="Sidebar" style={{backgroundColor:"#B6D7A8"}}>
+    <aside class="w-64 border-r-2	" aria-label="Sidebar" style={{backgroundColor:"#241633"}}>
       <div class="overflow-y-auto h-screen py-4 px-3  rounded dark:bg-gray-800">
         <ul class="space-y-2">
           <li>
             <a href="/">
-              <img src={logo}
+              <img src={logo2}
                 style={{marginLeft:'60px'}}
                 alt=""
                 width="80"
                 height="60" />
             </a>
             <span className="ml-3 font-extrabold text-2xl	" style={{color:"#7DB500"}}>
-                <span style={{color:'#5A8200'}}>Smart </span>
-                Garden
+                <span style={{color:'#5A8200', paddingLeft:'35px'}}>our</span>
+                Farm
               </span>
               <br/>
               <hr
@@ -56,10 +58,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               />
               <div class="pt-6 md:p-6 text-center md:text-left space-y-4">
                 <figcaption class="font-medium">
-                  <div class="text-sky-500 dark:text-sky-400 font-bold">
+                  <div class="text-sky-500 dark:text-sky-400 font-bold" style={{color:"white"}}>
                      { isAuthenticated && user? user.username : 'Anonymous'} 
                   </div>
-                  <div class="text-slate-700 dark:text-slate-500">
+                  <div class="text-slate-700 dark:text-slate-500" style={{color:"white"}}>
                   { isAuthenticated && user? user.email : 'UnknownEmail'} 
                   </div>
                 </figcaption>
@@ -67,10 +69,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </figure>
           </li>
           <li>
-            <p className="text-lg font-bold">Thao tác</p>
+            <p className="text-lg font-bold" style={{color:"white"}}>Thao tác</p>
             <a
               href="/control"
-              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              class="flex items-center p-2 text-base font-normal text-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <img src="https://cdn-icons-png.flaticon.com/512/3126/3126489.png" width="30px"/>
               <span class="flex-1 ml-3 whitespace-nowrap">
@@ -79,10 +81,10 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </a>
           </li>
           <li>
-            <p className="text-lg font-bold">Thông số môi trường</p>
+            <p className="text-lg font-bold" style={{color:"white"}}>Thông số môi trường</p>
             <Link
               to="/temperature"
-              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              class="flex items-center p-2 text-base font-normal text-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <img src="https://cdn-icons-png.flaticon.com/512/3815/3815449.png" width="30px"/>
               <span class="flex-1 ml-3 whitespace-nowrap">Nhiệt độ</span>
@@ -91,7 +93,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           <li>
             <Link
               to="/moisture"
-              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              class="flex items-center p-2 text-base font-normal text-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <img src="https://cdn-icons-png.flaticon.com/512/6634/6634686.png" width="30px"/>
               <span class="flex-1 ml-3 whitespace-nowrap">Độ ẩm đất</span>
@@ -100,7 +102,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           <li>
             <Link
               to="/sound"
-              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              class="flex items-center p-2 text-base font-normal text-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <img src="https://img.icons8.com/external-icongeek26-outline-colour-icongeek26/344/external-sound-music-icongeek26-outline-colour-icongeek26.png" width="30px"/>
               <span class="flex-1 ml-3 whitespace-nowrap">
@@ -111,7 +113,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           <li>
             <Link
               to="/light"
-              class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              class="flex items-center p-2 text-base font-normal text-gray-100 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <img src="https://img.icons8.com/neon/344/experimental-sun-neon.png" width="30px"/>
               <span class="flex-1 ml-3 whitespace-nowrap">
