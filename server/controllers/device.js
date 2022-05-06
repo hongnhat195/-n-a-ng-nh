@@ -5,9 +5,8 @@ const jsons = require("../config/default");
 const device = (() => {
   const getDevice = async (req, res) => {
     try {
-      console.log("body:", req.body);
-      const device = await Device.find();
-      res.status(200).send(device);
+      device_list = await Device.find();
+      return res.status(200).send(device_list);
     } catch (err) {
       res.status(404).send(err);
     }
@@ -34,17 +33,19 @@ const device = (() => {
   };
   const setDeviceStatus = async (req, res) => {
     try {
-      const name = req.body.name;
       console.log("setDeviceStatus", req.body);
+      const { name, value } = req.body;
+      value_set = value == 1 ? "on" : "off";
+      await Device.updateOne({ name }, { status: value_set });
       await axios({
         method: "post",
-        url: `https://io.adafruit.com/api/v2/Tien9258/feeds/${name}/data`,
+        url: `https://io.adafruit.com/api/v2/binhbuibksg0123/feeds/${name}/data`,
         headers: {
           "content-type": "application/json",
           "X-AIO-Key": jsons.AIO_KEY,
         },
         data: {
-          value: req.body.value,
+          value,
         },
       }).then((data) => {
         res.status(200).send(data.data.value);

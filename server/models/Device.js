@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const DeviceSchema = new mongoose.Schema({
   name: {
@@ -9,7 +9,7 @@ const DeviceSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    default:"off",
+    default: "off",
   },
   level: {
     type: Number,
@@ -17,4 +17,4 @@ const DeviceSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Device = mongoose.model('devices', DeviceSchema);
+module.exports = Device = mongoose.model("devices", DeviceSchema);
