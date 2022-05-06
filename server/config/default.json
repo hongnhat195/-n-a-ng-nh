@@ -1,5 +1,5 @@
 {
   "mongoURI": "mongodb+srv://hongnhat195:cogaicuaanh@cluster0.lqczl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
   "jwtSecret": "dMS9tJM1kVywjPq9nDU25K9",
-  "AIO_KEY": "aio_DgNW0356m0ckC6aE0oYNCAzqh6iF"
+  "AIO_KEY": "aio_ApSq90Hix0YZpAE1O906Ccz4z6dK"
 }

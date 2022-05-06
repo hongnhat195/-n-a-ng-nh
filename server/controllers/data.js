@@ -1,5 +1,5 @@
 //const Data = require("../models/Data");
-
+const config = require("../config/default.json");
 const axios = require("axios");
 
 const getDataByDevice = (() => {
@@ -7,10 +7,10 @@ const getDataByDevice = (() => {
     console.log(req.body);
     try {
       const response = await axios.get(
-        `https://io.adafruit.com/api/v2/binhbuibksg0123/feeds/ourfarm-${req.body.name}/data?X-AIO-Key=aio_DgNW0356m0ckC6aE0oYNCAzqh6iF`
+        `https://io.adafruit.com/api/v2/binhbuibksg0123/feeds/ourfarm-${req.body.name}/data?X-AIO-Key=${config.AIO_KEY}`
       );
       const datadb = response.data;
-      // console.log(datadb);
+      console.log(datadb);
       let data = [];
       let start = new Date(req.body.start);
       let end = new Date(req.body.end);
