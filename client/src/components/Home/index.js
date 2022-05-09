@@ -88,9 +88,8 @@ function Home(props) {
       });
   }, [dispatch, userInfo]);
   const devices = [
-    { id: 1, name: "Máy bơm", state: data_soil.status },
-    { id: 2, name: "Máy phun sương", state: data_temp.status },
-    { id: 3, name: "Máy quạt ", state: data_sound.status },
+    { id: 1, name: "Đèn buzzer", state: data_soil.status },
+
     { id: 4, name: "Bóng đèn", state: data_light.status },
   ];
 
